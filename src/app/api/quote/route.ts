@@ -1,13 +1,12 @@
-export async function GET(request: Request) {
-  return new Response("hi");
-}
-
 export async function POST(req: Request) {
+  // const API_KEY = process.env.API_KEY;
+  const API_KEY = "9UFSxSHINAx0rspIOzwQlg==H05cqH5sxoNl6PP6";
+  console.log("api key from env ", API_KEY);
   const response = await fetch(
     "https://api.api-ninjas.com/v1/quotes?category=age",
     {
       headers: {
-        "X-Api-Key": "9UFSxSHINAx0rspIOzwQlg==H05cqH5sxoNl6PP6", // Assuming the API expects the key in this header; adjust as needed,
+        "X-Api-Key": API_KEY,
         cashe: "no-store", // This will help prevent caching
         Pragma: "no-cache", // For older HTTP/1.0 servers
         Expires: "0", // Proxies

@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-
+import { Modal } from "./index";
+import { useState, useEffect } from "react";
 type Quote = [
   {
     quote: string;
@@ -51,12 +51,17 @@ async function saveData(quote: Quote) {
   }
 }
 
-export default function Page() {
+export function LandingPage() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  let [isOpen, setIsOpen] = useState(true);
   const [quote, setQuote] = useState<Quote | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<Boolean>(false);
 
   const generateQuote = async () => {
+    console.log("clicked");
     try {
+      setLoading(true);
       const result = await getData();
       setQuote(result);
       setError(null);
@@ -64,6 +69,8 @@ export default function Page() {
     } catch (error: any) {
       console.error("Error posting data:", error);
       setError("Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -79,18 +86,46 @@ export default function Page() {
     }
   }, [quote]);
 
+  useEffect(() => {
+    if (loading) {
+      console.log("it's loading");
+    }
+  }, [loading]);
+
   console.log("quote", quote);
   return (
-    <main>
-      <button onClick={generateQuote}>Get a Quote</button>
-      {quote && quote.length > 0 && <p>{quote[0].quote}</p>}
-      {error && <p>Error: {error}</p>}
+    <>
+      <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+        <div className="hidden sm:mb-8 sm:flex sm:justify-center"></div>
+        <div className="text-center">
+          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            Positive Quote Generator
+          </h1>
+          {loading && <p className="absolute">Loading...</p>}
+          <p className="mt-6 text-lg leading-8 text-gray-600">
+            Hit the button below to get positive quotes to start your day!
+          </p>
 
-      {quote && (
-        <button onClick={saveQuote}>
-          Save the quote to your favourite list
-        </button>
-      )}
-    </main>
+          <Modal text="Get a Quote" onClick={generateQuote} />
+
+          {/* <div className="mt-10 flex items-center justify-center gap-x-6">
+            {quote && <p>{quote[0].quote}</p>}
+            {error && <p>Error: {error}</p>}
+
+            {quote && (
+              <button onClick={saveQuote}>
+                Save the quote to your favourite list
+              </button>
+            )} */}
+          {/* <a
+              href="#"
+              className="text-sm font-semibold leading-6 text-gray-900"
+            >
+              Learn more <span aria-hidden="true">→</span>
+            </a> */}
+          {/* </div> */}
+        </div>
+      </div>
+    </>
   );
 }

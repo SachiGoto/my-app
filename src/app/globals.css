@@ -2,6 +2,57 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  background: radial-gradient(
+    circle at center,
+    deepskyblue,
+    rgb(206, 130, 239),
+    rgb(59, 59, 199)
+  );
+  background-size: 180% 180%;
+  animation: gradient-animation 35s ease infinite;
+
+  -webkit-animation: AnimationName 35s ease infinite;
+  -moz-animation: AnimationName 35s ease infinite;
+  /* animation: AnimationName 8s ease infinite; */
+  height: 100vh;
+  width: 100vw;
+}
+
+@-webkit-keyframes AnimationName {
+  0% {
+    background-position: 82% 0%;
+  }
+  80% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 82% 0%;
+  }
+}
+@-moz-keyframes AnimationName {
+  0% {
+    background-position: 82% 0%;
+  }
+  80% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 82% 0%;
+  }
+}
+@keyframes AnimationName {
+  0% {
+    background-position: 82% 0%;
+  }
+  80% {
+    background-position: 0% 100%;
+  }
+  100% {
+    background-position: 82% 0%;
+  }
+}
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
