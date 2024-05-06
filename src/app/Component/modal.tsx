@@ -2,6 +2,11 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { FaHeart } from "react-icons/fa";
+import { Box, Flex, Button, Text } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
+import { Icon } from "@chakra-ui/react";
+import { ImQuotesLeft } from "react-icons/im";
+// import { Toast } from "../Component";
 interface ModalProps {
   text: string;
   onClick: () => void; // Define the type of onClick, adjust as needed for parameters
@@ -20,6 +25,7 @@ type Error = {
 };
 
 export function Modal({ text, onClick }: ModalProps) {
+  const toast = useToast();
   let [isOpen, setIsOpen] = useState(false);
   //   console.log("quoteInfo", quoteInfo);
   function closeModal() {
@@ -36,6 +42,10 @@ export function Modal({ text, onClick }: ModalProps) {
     return response.json();
   }
 
+  function delay(duration: number) {
+    return new Promise((resolve) => setTimeout(resolve, duration));
+  }
+
   async function saveData(quote: Quote) {
     try {
       const quoteData = {
@@ -45,6 +55,7 @@ export function Modal({ text, onClick }: ModalProps) {
         created_at: new Date().toISOString(),
       };
 
+      await delay(3000);
       console.log("quote format", JSON.stringify(quoteData));
       const response = await fetch(
         "http://localhost:8080/api/quotes/addQuote",
@@ -56,6 +67,7 @@ export function Modal({ text, onClick }: ModalProps) {
           body: JSON.stringify(quoteData),
         }
       );
+
       if (response.ok) {
         // const jsonResponse = await response;
         // console.log("adding quote response:", jsonResponse);
@@ -87,8 +99,25 @@ export function Modal({ text, onClick }: ModalProps) {
 
   const saveQuote = async () => {
     console.log("clicked", quote);
+    const quoteSavingPromise = saveData(quote);
 
-    const result = await saveData(quote);
+    toast.promise(quoteSavingPromise, {
+      success: {
+        position: "top",
+        title: "Success",
+        description: "The quote is added to your favourite list",
+      },
+      error: {
+        position: "top",
+        title: "Promise rejected",
+        description: "Something went wrong",
+      },
+      loading: {
+        position: "top",
+        title: "Promise pending",
+        description: "Please wait",
+      },
+    });
   };
 
   function openModal() {
@@ -142,31 +171,36 @@ export function Modal({ text, onClick }: ModalProps) {
                       Payment successful
                     </Dialog.Title> */}
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">{quote[0].quote}</p>
-                    </div>
-                    <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        Author: {quote[0].author}
-                      </p>
+                      <Icon as={ImQuotesLeft} color="gray" />
+                      <Text align={"center"}>{quote[0].quote}</Text>
+                      <Icon as={ImQuotesLeft} ml={"90%"} color="gray" />
                     </div>
 
-                    <div className="mt-4">
+                    <Text as="i" color="gray">
+                      Author: {quote[0].author}
+                    </Text>
+
+                    <div>
                       {/* <button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                       Get another Quote
                     </button> */}
-                      <button
-                        className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={generateQuote}
-                      >
-                        Get another Quote
-                      </button>
-                      <button
-                        className="ml-5"
-                        type="button"
-                        onClick={saveQuote}
-                      >
-                        <FaHeart color="red" />
-                      </button>
+                      <Flex align="center" justify="space-around" mt={"10%"}>
+                        <Button
+                          onClick={generateQuote}
+                          colorScheme={"telegram"}
+                        >
+                          Get another Quote
+                        </Button>
+
+                        <Box ml={"5%"}>
+                          <Icon
+                            as={FaHeart}
+                            color="red"
+                            _hover={{ color: "#FF5733" }}
+                            onClick={saveQuote}
+                          />
+                        </Box>
+                      </Flex>
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>

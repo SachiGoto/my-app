@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/*
+.background {
   background: radial-gradient(
     circle at center,
     deepskyblue,
@@ -15,10 +16,10 @@ body {
   -webkit-animation: AnimationName 35s ease infinite;
   -moz-animation: AnimationName 35s ease infinite;
   /* animation: AnimationName 8s ease infinite; */
-  height: 100vh;
+/* height: 100vh;
   width: 100vw;
-}
-
+} */
+/* 
 @-webkit-keyframes AnimationName {
   0% {
     background-position: 82% 0%;
@@ -51,7 +52,7 @@ body {
   100% {
     background-position: 82% 0%;
   }
-}
+}  */
 
 /* :root {
   --foreground-rgb: 0, 0, 0;
