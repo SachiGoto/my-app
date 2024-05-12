@@ -6,6 +6,7 @@ import { Box, Flex, Button, Text } from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 import { Icon } from "@chakra-ui/react";
 import { ImQuotesLeft } from "react-icons/im";
+import { LinkComp } from "../Component/link";
 // import { Toast } from "../Component";
 interface ModalProps {
   text: string;
@@ -27,6 +28,7 @@ type Error = {
 export function Modal({ text, onClick }: ModalProps) {
   const toast = useToast();
   let [isOpen, setIsOpen] = useState(false);
+  let [isLoading, setIsLoading] = useState(false);
   //   console.log("quoteInfo", quoteInfo);
   function closeModal() {
     setIsOpen(false);
@@ -84,7 +86,8 @@ export function Modal({ text, onClick }: ModalProps) {
   const generateQuote = async () => {
     console.log("clicked");
     try {
-      //   setLoading(true);
+      setIsLoading(true);
+
       const result = await getData();
       setQuote(result);
       setError(null);
@@ -93,7 +96,8 @@ export function Modal({ text, onClick }: ModalProps) {
       console.error("Error posting data:", error);
       setError("Something went wrong");
     } finally {
-      //   setLoading(false);
+      setIsOpen(true);
+      setIsLoading(false);
     }
   };
 
@@ -121,20 +125,21 @@ export function Modal({ text, onClick }: ModalProps) {
   };
 
   function openModal() {
-    setIsOpen(true);
     generateQuote();
   }
 
   return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center z-100">
-        <button
+      <div className=" inset-0 flex mr=5">
+        <Button
+          isLoading={isLoading}
           type="button"
           onClick={openModal}
-          className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-[10%]"
+          colorScheme="blue"
+          variant="solid"
         >
           {text}
-        </button>
+        </Button>
       </div>
 
       {quote && (
@@ -188,6 +193,7 @@ export function Modal({ text, onClick }: ModalProps) {
                         <Button
                           onClick={generateQuote}
                           colorScheme={"telegram"}
+                          isLoading={isLoading}
                         >
                           Get another Quote
                         </Button>

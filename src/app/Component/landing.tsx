@@ -1,6 +1,9 @@
 "use client";
 import { Modal } from "./index";
 import { useState, useEffect } from "react";
+import { LinkComp } from "../Component/link";
+import { Flex, Box, Spacer } from "@chakra-ui/react";
+
 type Quote = [
   {
     quote: string;
@@ -106,7 +109,10 @@ export function LandingPage() {
             Hit the button below to get positive quotes to start your day!
           </p>
 
-          <Modal text="Get a Quote" onClick={generateQuote} />
+          <Flex align="center" justify="center" mt="10%">
+            <Modal text="Get a Quote" onClick={generateQuote} />
+            <LinkComp href="/favourites">Favourites</LinkComp>
+          </Flex>
 
           {/* <div className="mt-10 flex items-center justify-center gap-x-6">
             {quote && <p>{quote[0].quote}</p>}

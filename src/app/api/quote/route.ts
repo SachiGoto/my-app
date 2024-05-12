@@ -3,7 +3,7 @@ export async function POST(req: Request) {
   const API_KEY = "9UFSxSHINAx0rspIOzwQlg==H05cqH5sxoNl6PP6";
   console.log("api key from env ", API_KEY);
   const response = await fetch(
-    "https://api.api-ninjas.com/v1/quotes?category=age",
+    "https://api.api-ninjas.com/v1/quotes?category=amazing",
     {
       headers: {
         "X-Api-Key": API_KEY,
