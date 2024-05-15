@@ -1,18 +1,8 @@
 "use client";
-import React from "react";
 import { useState, useEffect } from "react";
 import { LinkComp } from "../Component/link";
-import {
-  Container,
-  Card,
-  CardBody,
-  Text,
-  Box,
-  useToast,
-  Flex,
-} from "@chakra-ui/react";
+import { Container, Text, Box, useToast, Flex } from "@chakra-ui/react";
 import { FaRegTrashCan } from "react-icons/fa6";
-// http://localhost:8080/api/quotes/getQuotes
 
 type Quote = [
   {
@@ -31,7 +21,6 @@ export default function Page() {
       "http://localhost:8080/api/quotes/getQuotes"
     ).then((response) => response.json());
 
-    console.log("get all favourites ", response);
     return response;
   }
 
@@ -50,9 +39,6 @@ export default function Page() {
       }
     );
     if (res.ok) {
-      const message = await res.body; // Get the response body as text
-      console.log(message);
-      // Displaying notification when data is deleted successfully
       toast({
         position: "top",
         title: "Success!",
@@ -61,7 +47,6 @@ export default function Page() {
         isClosable: false,
       });
     } else {
-      // Displaying notification when data is not found
       toast({
         position: "top",
         title: "Somthing went wrong!",
